@@ -4,17 +4,18 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	mqtt "github.com/eclipse/paho.mqtt.golang"
-	"github.com/google/uuid"
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/google/uuid"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v2"
 )
 
 var config struct {
@@ -329,7 +330,9 @@ func modeState(v int64) string {
 }
 
 func fanModeCommand(v string) int64 {
-	if v == "high" {
+	if v == "auto" {
+		return 0
+	} else if v == "high" {
 		return 1
 	} else if v == "medium" {
 		return 2
@@ -341,7 +344,9 @@ func fanModeCommand(v string) int64 {
 }
 
 func fanModeState(v int64) string {
-	if v == 1 {
+	if v == 0 {
+		return "auto"
+	} else if v == 1 {
 		return "high"
 	} else if v == 2 {
 		return "medium"
